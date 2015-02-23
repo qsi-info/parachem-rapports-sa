@@ -21,13 +21,10 @@ angular.module('AngularSharePointApp').controller('ReportNewCtrl', ['$scope', '$
 	}
 
 
-	
-
-
 
 	$scope.report = {
 		Title: '',
-		ReportType: 'uo',
+		ReportType: 'sa',
 		useLastReport: true,
 	};
 
@@ -65,7 +62,7 @@ angular.module('AngularSharePointApp').controller('ReportNewCtrl', ['$scope', '$
 
 
 	function get_user_last_report () {
-		ReportList.find('$filter=(IsActive eq 0) and (ReportType eq \'uo\') and (Author/Id eq ' + $rootScope.me.get_id() + ') &$orderby=Modified desc&$top=1&select=Id').then(function (reports) {
+		ReportList.find('$filter=(IsActive eq 0) and (ReportType eq \'sa\') and (Author/Id eq ' + $rootScope.me.get_id() + ') &$orderby=Modified desc&$top=1&select=Id').then(function (reports) {
 			if (reports.length > 0) {
 				$scope.accessLastReport = true;
 				$scope.lastReportUrl = '#/report/manage/' + reports[0].Id + '?review=yes';				

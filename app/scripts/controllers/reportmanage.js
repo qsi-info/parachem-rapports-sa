@@ -32,7 +32,7 @@ angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportLi
 			$scope.sections = sections;
 			$scope.inputs = {};
 			sections.forEach(function (section) {
-				$scope.inputs['UO' + section.Id] = '';
+				$scope.inputs['SA' + section.Id] = '';
 			});
 			bootstrap_collaspse_sections(sections);
 			$scope.isLoad = true;
@@ -44,7 +44,7 @@ angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportLi
 
 	$scope.addComment = function (section) {
 
-		var inputIndentifier = 'UO' + section.Id;
+		var inputIndentifier = 'SA' + section.Id;
 
 		if ($scope.inputs[inputIndentifier] === '') {
 			return window.alert('Vous devez entrez du texte');
@@ -83,7 +83,7 @@ angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportLi
 		var buffer = comment;
 		CommentList.remove(comment.Id).then(function () {
 			$scope.comments.splice($scope.comments.indexOf(comment), 1);
-			$scope.inputs['UO' + buffer.SectionId] = buffer.Title;
+			$scope.inputs['SA' + buffer.SectionId] = buffer.Title;
 			document.getElementById('Comment' + buffer.SectionId).focus();
 			cfpLoadingBar.complete();				
 		});
@@ -142,7 +142,7 @@ angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportLi
 
 
 	function get_report_sections () {
-		return SectionList.find('$filter=ReportType eq \'UO\'');
+		return SectionList.find('$filter=ReportType eq \'SA\'');
 	}
 
 
@@ -163,7 +163,7 @@ angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportLi
 
 	function get_last_report () {
 		var deferred = $q.defer();
-		ReportList.find('$filter=(IsActive eq 0) and (ReportType eq \'uo\')&$orderby=Modified desc&$top=1&$select=Note,Id,IsActive').then(function (reports) {
+		ReportList.find('$filter=(IsActive eq 0) and (ReportType eq \'sa\')&$orderby=Modified desc&$top=1&$select=Note,Id,IsActive').then(function (reports) {
 			if (reports.length > 0) {
 				deferred.resolve(reports[0]);
 			} else {

@@ -109,11 +109,13 @@ angular
     return new SharePoint.API.List('Commentaires de rapport');
   }])
 
-
   .factory('ReportList', ['SharePoint', function (SharePoint) {
     return new SharePoint.API.List('Rapports de quart');
   }])
 
+  .factory('TableList', ['SharePoint', function (SharePoint) {
+    return new SharePoint.API.List('Tableaux Rapports SA');
+  }])
 
   .factory('SectionList', ['SharePoint', function (SharePoint) {
     return new SharePoint.API.List('Sections Rapports Parachem');

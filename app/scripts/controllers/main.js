@@ -16,7 +16,7 @@ angular.module('AngularSharePointApp').controller('MainCtrl', ['ReportList', '$l
 
 
 
-	ReportList.find('$filter=(IsActive eq 1) and (ReportType eq \'uo\')&$select=Id').then(function (reports) {
+	ReportList.find('$filter=(IsActive eq 1) and (ReportType eq \'sa\')&$select=Id').then(function (reports) {
 		if (reports.length < 1) {
 			$location.path('/report/new');
 		} else {
