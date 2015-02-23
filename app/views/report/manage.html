@@ -185,8 +185,8 @@
 
 
 <!-- TABLEAU -->
-<div class="modal fade modal-fullscreen" id="uniteProductionChargeTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-	<form ng-submit="saveReport()">
+<div class="modal fade modal-fullscreen report-table" id="uniteProductionChargeTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<form ng-submit="saveUPCTable()">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-body">
@@ -201,62 +201,13 @@
 			      				<th>Réservoir</th>
 			      			</tr>
 			      		</thead>
+
 			      		<tbody>
-			      			<tr>
-			      				<td>Charge de Xylène</td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td>Charge de Toluène au STDP </td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td>Production de Px</td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td>Production de C9+ ligne <strong style="color: red;">OUEST</strong></td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td>Production de BZ</td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td>STDP/Xyl. Hors-Spec</td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td>Mazout aux chaudières</td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td>Production de BT Mix</td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td>Wagon de Xylène + Suncor</td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td>Wagon de Toluène</td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td>Charge du Xylène</td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td>Toluène de Suncor</td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td>Injection de PX au rés. 1106</td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td>Melt du stage #3</td>
-			      				<td><input type="text"/></td>
+			      			<tr ng-repeat="field in fields.UPC">
+			      				<td>{{field.Description}}</td>
+			      				<td>
+			      					<input type="text" ng-model="bufferTables.UPC[field.EntityPropertyName]"/>
+			      				</td>
 			      			</tr>
 			      		</tbody>
 			      	</table>
@@ -291,7 +242,7 @@
 
 <!-- TABLEAU -->
 <div class="modal fade modal-fullscreen" id="mouvementsReservoirsTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-	<form ng-submit="saveReport()">
+	<form ng-submit="saveMDRTable()">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-body">
@@ -310,7 +261,13 @@
 			      			</tr>
 			      		</thead>
 			      		<tbody>
-			      			<tr>
+		<!-- 	      			<tr ng-repeat="field in fields.MDR">
+			      				<td>
+			      					<input type="text" ng-model="bufferTables.MDR[]"
+			      				</td>
+			      			</tr> -->
+
+<!-- 			      			<tr>
 			      				<td><input type="text"/></td>
 			      				<td><input type="text"/></td>
 			      				<td><input type="text"/></td>
@@ -387,7 +344,7 @@
 			      				<td><input type="text"/></td>
 			      				<td><input type="text"/></td>
 			      				<td><input type="text"/></td>
-			      			</tr>
+			      			</tr> -->
 
 			      		</tbody>
 			      	</table>

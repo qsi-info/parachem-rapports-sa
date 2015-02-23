@@ -113,8 +113,12 @@ angular
     return new SharePoint.API.List('Rapports de quart');
   }])
 
-  .factory('TableList', ['SharePoint', function (SharePoint) {
-    return new SharePoint.API.List('Tableaux Rapports SA');
+  .factory('UPCTableList', ['SharePoint', function (SharePoint) {
+    return new SharePoint.API.List('Tableau Unite Production Charge');
+  }])
+
+  .factory('MDRTableList', ['SharePoint', function (SharePoint) {
+    return new SharePoint.API.List('Tableau Mouvements de Reservoirs');
   }])
 
   .factory('SectionList', ['SharePoint', function (SharePoint) {

@@ -14,13 +14,16 @@
 /* jslint browser: true, plusplus: true */
 
 
-angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportList', '$location', '$routeParams', '$scope', '$rootScope', 'CommentList', '$q', 'SectionList', 'cfpLoadingBar', function (ReportList, $location, $routeParams, $scope, $rootScope, CommentList, $q, SectionList, cfpLoadingBar) {
+angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportList', '$location', '$routeParams', '$scope', '$rootScope', 'CommentList', '$q', 'SectionList', 'cfpLoadingBar', 'UPCTableList', 'MDRTableList', function (ReportList, $location, $routeParams, $scope, $rootScope, CommentList, $q, SectionList, cfpLoadingBar, UPCTableList, MDRTableList) {
 
 	if (typeof $rootScope.me === 'undefined') {
 		return $location.path('/gateway');
 	}
 
 	$scope.inReview = $routeParams.review === 'yes' ? true : false;
+	$scope.tables = {};
+	$scope.bufferTables = {};
+	$scope.fields = {};
 
 	cfpLoadingBar.start();
 	init_report_manager().then(function (result) {
@@ -28,17 +31,19 @@ angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportLi
 			return $location.path('/report/close-last/' + $scope.report.Id);
 		}
 
+
 		get_report_sections().then(function (sections) {
 			$scope.sections = sections;
 			$scope.inputs = {};
 			sections.forEach(function (section) {
 				$scope.inputs['SA' + section.Id] = '';
 			});
-			bootstrap_collaspse_sections(sections);
-			$scope.isLoad = true;
-			cfpLoadingBar.complete();
+			get_tables().then(function () {
+				bootstrap_collaspse_sections(sections);
+				$scope.isLoad = true;
+				cfpLoadingBar.complete();
+			});
 		});
-
 	});
 
 
@@ -124,6 +129,76 @@ angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportLi
 		}
 	};
 
+
+
+	$scope.saveUPCTable= function () {
+		cfpLoadingBar.start();
+		UPCTableList.update($scope.tables.UPC.Id, $scope.bufferTables.UPC).then(function () {
+			cfpLoadingBar.complete();
+			$('.report-table').modal('hide');
+		});
+		// console.log($scope.table);
+	};
+
+
+
+
+
+
+
+	/////////////////////////////////////////////////////////////////
+	// PRIVATE FUNCTIONS 
+	/////////////////////////////////////////////////////////////////	
+
+	function get_tables () {
+		var deferred = $q.defer();
+		_get_upc_table().then(function () {
+			_get_mdr_table().then(function () {
+				deferred.resolve(null);
+			});
+		});
+		return deferred.promise;
+	}
+
+
+
+	function _get_mdr_table () {
+		var deferred = $q.defer();
+		MDRTableList.find('$filter=Report/Id eq ' + $scope.report.Id).then(function (tables) {
+			if (tables.length > 0) {
+				$scope.tables.MDR = tables[0];
+			}
+			MDRTableList.fields('$filter=(CanBeDeleted eq true) and (TypeDisplayName ne \'Lookup\')').then(function (fields) {
+				$scope.fields.MDR = fields;
+				$scope.bufferTables.MDR = {};
+				fields.forEach(function (field) {
+					$scope.bufferTables.MDR[field.EntityPropertyName] = $scope.tables.MDR[field.EntityPropertyName];
+				});
+				deferred.resolve(null);
+			});
+		});
+		return deferred.promise;
+	}
+
+
+
+	function _get_upc_table () {
+		var deferred = $q.defer();
+		UPCTableList.find('$filter=Report/Id eq ' + $scope.report.Id).then(function (tables) {
+			if (tables.length > 0) {
+				$scope.tables.UPC = tables[0];
+			}
+			UPCTableList.fields('$filter=(CanBeDeleted eq true) and (TypeDisplayName ne \'Lookup\')').then(function (fields) {
+				$scope.fields.UPC = fields;
+				$scope.bufferTables.UPC = {};
+				fields.forEach(function (field) {
+					$scope.bufferTables.UPC[field.EntityPropertyName] = $scope.tables.UPC[field.EntityPropertyName];
+				});
+				deferred.resolve(null);
+			});
+		});
+		return deferred.promise;
+	}
 
 
 

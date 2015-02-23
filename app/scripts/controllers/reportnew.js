@@ -13,7 +13,7 @@
 /* jshint loopfunc:true */
 /* jslint browser: true, plusplus: true */
 
-angular.module('AngularSharePointApp').controller('ReportNewCtrl', ['$scope', '$rootScope', '$location', 'ReportList', function ($scope, $rootScope, $location, ReportList) {
+angular.module('AngularSharePointApp').controller('ReportNewCtrl', ['$scope', '$rootScope', '$location', '$q', 'ReportList', 'UPCTableList', 'MDRTableList', function ($scope, $rootScope, $location, $q, ReportList, UPCTableList, MDRTableList) {
 
 
 	if (typeof $rootScope.me === 'undefined') {
@@ -53,12 +53,51 @@ angular.module('AngularSharePointApp').controller('ReportNewCtrl', ['$scope', '$
 
 		$scope.inCreation = false;
 
-		ReportList.add($scope.report).then(function (reportCreated) {
-			$location.path('/report/manage/' + reportCreated.Id);
+
+		create_essential().then(function (reportId) {
+			$location.path('/report/manage/' + reportId);
 		});
+
+		// ReportList.add($scope.report).then(function (reportCreated) {
+		// 	UPCTableList.add({ ReportId: reportCreated.Id, Title: '' }).then(function () {
+		// 		$location.path('/report/manage/' + reportCreated.Id);
+		// 	});
+		// });
 	};	
 
 
+
+	function create_essential () {
+		var deferred = $q.defer();
+		create_report()
+		.then(function (createdReport) {
+			create_upc_table(createdReport.Id)
+			.then(function () {
+				create_mdr_table(createdReport.Id)
+				.then(function () {
+					deferred.resolve(createdReport.Id);
+				});
+			});
+		});
+		return deferred.promise;	
+	}
+
+
+
+	function create_upc_table (reportId) {
+		return UPCTableList.add({ ReportId: reportId });
+	}
+
+
+	function create_mdr_table (reportId) {
+		return MDRTableList.add({ ReportId: reportId });
+	}
+
+
+
+	function create_report () {
+		return ReportList.add($scope.report);
+	}
 
 
 	function get_user_last_report () {

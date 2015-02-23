@@ -197,9 +197,9 @@ angular.module('AngularSharePointApp').factory('SharePoint', ['$q', function ($q
     };
 
 
-    this.fields = function () {
+    this.fields = function (odata) {
       var deferred = $q.defer();
-      _sharepoint_get_request('/web/lists/getByTitle(\'' + listTitle + '\')/fields')
+      _sharepoint_get_request('/web/lists/getByTitle(\'' + listTitle + '\')/fields', odata)
       .then(function (response) {
         deferred.resolve(JSON.parse(response.body).d.results);
       })
