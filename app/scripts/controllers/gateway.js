@@ -20,6 +20,9 @@ angular.module('AngularSharePointApp').controller('GatewayCtrl', ['SharePoint', 
 		SharePoint.init($rootScope.sp.host, $rootScope.sp.app, $rootScope.sp.sender).then(function () {
 			SharePoint.API.me().then(function (user) {
 				$rootScope.me = user;
+				if ($rootScope.sp.isWebPart) {
+					SharePoint.resizeCWP('800');
+				}				
 				$location.path('/home');
 			});			
 		});
