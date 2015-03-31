@@ -13,7 +13,9 @@
 /* jshint loopfunc:true */
 /* jslint browser: true, plusplus: true */
 
-angular.module('AngularSharePointApp').controller('ReportNewCtrl', ['$scope', '$rootScope', '$location', '$q', 'ReportList', 'UPCTableList', 'MDRTableList', function ($scope, $rootScope, $location, $q, ReportList, UPCTableList, MDRTableList) {
+angular.module('AngularSharePointApp').controller('ReportNewCtrl', 
+	['$scope', '$rootScope', '$location', '$q', 'ReportList', 
+	function ($scope, $rootScope, $location, $q, ReportList) {
 
 
 	if (typeof $rootScope.me === 'undefined') {
@@ -51,47 +53,44 @@ angular.module('AngularSharePointApp').controller('ReportNewCtrl', ['$scope', '$
 			return window.alert('Vous devez selectionner une équipe');
 		}
 
-		$scope.inCreation = false;
+		if (window.confirm('Etes-vous certain de vouloir créer un rapport de ' + $scope.report.Period.toUpperCase() + ' avec l\'équipe ' + $scope.report.Team + '')) {
+			$scope.inCreation = false;
 
 
-		create_essential().then(function (reportId) {
-			$location.path('/report/manage/' + reportId);
-		});
+			create_report().then(function (report) {
+				$location.path('/report/manage/' + report.Id);
+			});
+		}
 
-		// ReportList.add($scope.report).then(function (reportCreated) {
-		// 	UPCTableList.add({ ReportId: reportCreated.Id, Title: '' }).then(function () {
-		// 		$location.path('/report/manage/' + reportCreated.Id);
-		// 	});
-		// });
 	};	
 
 
 
-	function create_essential () {
-		var deferred = $q.defer();
-		create_report()
-		.then(function (createdReport) {
-			create_upc_table(createdReport.Id)
-			.then(function () {
-				create_mdr_table(createdReport.Id)
-				.then(function () {
-					deferred.resolve(createdReport.Id);
-				});
-			});
-		});
-		return deferred.promise;	
-	}
+	// function create_essential () {
+	// 	var deferred = $q.defer();
+	// 	create_report()
+	// 	.then(function (createdReport) {
+	// 		create_upc_table(createdReport.Id)
+	// 		.then(function () {
+	// 			create_mdr_table(createdReport.Id)
+	// 			.then(function () {
+	// 				deferred.resolve(createdReport.Id);
+	// 			});
+	// 		});
+	// 	});
+	// 	return deferred.promise;	
+	// }
 
 
 
-	function create_upc_table (reportId) {
-		return UPCTableList.add({ ReportId: reportId });
-	}
+	// function create_upc_table (reportId) {
+	// 	return UPCTableList.add({ ReportId: reportId });
+	// }
 
 
-	function create_mdr_table (reportId) {
-		return MDRTableList.add({ ReportId: reportId });
-	}
+	// function create_mdr_table (reportId) {
+	// 	return MDRTableList.add({ ReportId: reportId });
+	// }
 
 
 

@@ -8,20 +8,20 @@
  * Controller of the AngularSharePointApp
  */
 
-/*jshint latedef: false */
+/* jshint latedef: false */
 /* global $:false */
 /* jshint loopfunc:true */
 /* jslint browser: true, plusplus: true */
 
 
-angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportList', '$location', '$routeParams', '$scope', '$rootScope', 'CommentList', '$q', 'SectionList', 'cfpLoadingBar', 'UPCTableList', 'MDRTableList', function (ReportList, $location, $routeParams, $scope, $rootScope, CommentList, $q, SectionList, cfpLoadingBar, UPCTableList, MDRTableList) {
+angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportList', '$location', '$routeParams', '$scope', '$rootScope', 'CommentList', '$q', 'SectionList', 'cfpLoadingBar', function (ReportList, $location, $routeParams, $scope, $rootScope, CommentList, $q, SectionList, cfpLoadingBar) {
 
 	if (typeof $rootScope.me === 'undefined') {
 		return $location.path('/gateway');
 	}
 
 	$scope.inReview = $routeParams.review === 'yes' ? true : false;
-	$scope.tables = {};
+	// $scope.tables = {};
 	$scope.bufferTables = {};
 	$scope.fields = {};
 
@@ -37,8 +37,6 @@ angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportLi
 			$scope.inputs = {};
 			sections.forEach(function (section) {
 				$scope.inputs['SA' + section.Id] = '';
-			});
-			get_tables().then(function () {
 				bootstrap_collaspse_sections(sections);
 				$scope.isLoad = true;
 				cfpLoadingBar.complete();
@@ -131,14 +129,13 @@ angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportLi
 
 
 
-	$scope.saveUPCTable= function () {
-		cfpLoadingBar.start();
-		UPCTableList.update($scope.tables.UPC.Id, $scope.bufferTables.UPC).then(function () {
-			cfpLoadingBar.complete();
-			$('.report-table').modal('hide');
-		});
-		// console.log($scope.table);
-	};
+	// $scope.saveUPCTable= function () {
+	// 	cfpLoadingBar.start();
+	// 	UPCTableList.update($scope.tables.UPC.Id, $scope.bufferTables.UPC).then(function () {
+	// 		cfpLoadingBar.complete();
+	// 		$('.report-table').modal('hide');
+	// 	});
+	// };
 
 
 
@@ -150,55 +147,55 @@ angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportLi
 	// PRIVATE FUNCTIONS 
 	/////////////////////////////////////////////////////////////////	
 
-	function get_tables () {
-		var deferred = $q.defer();
-		_get_upc_table().then(function () {
-			_get_mdr_table().then(function () {
-				deferred.resolve(null);
-			});
-		});
-		return deferred.promise;
-	}
+	// function get_tables () {
+	// 	var deferred = $q.defer();
+	// 	_get_upc_table().then(function () {
+	// 		_get_mdr_table().then(function () {
+	// 			deferred.resolve(null);
+	// 		});
+	// 	});
+	// 	return deferred.promise;
+	// }
 
 
 
-	function _get_mdr_table () {
-		var deferred = $q.defer();
-		MDRTableList.find('$filter=Report/Id eq ' + $scope.report.Id).then(function (tables) {
-			if (tables.length > 0) {
-				$scope.tables.MDR = tables[0];
-			}
-			MDRTableList.fields('$filter=(CanBeDeleted eq true) and (TypeDisplayName ne \'Lookup\')').then(function (fields) {
-				$scope.fields.MDR = fields;
-				$scope.bufferTables.MDR = {};
-				fields.forEach(function (field) {
-					$scope.bufferTables.MDR[field.EntityPropertyName] = $scope.tables.MDR[field.EntityPropertyName];
-				});
-				deferred.resolve(null);
-			});
-		});
-		return deferred.promise;
-	}
+	// function _get_mdr_table () {
+	// 	var deferred = $q.defer();
+	// 	MDRTableList.find('$filter=Report/Id eq ' + $scope.report.Id).then(function (tables) {
+	// 		if (tables.length > 0) {
+	// 			$scope.tables.MDR = tables[0];
+	// 		}
+	// 		MDRTableList.fields('$filter=(CanBeDeleted eq true) and (TypeDisplayName ne \'Lookup\')').then(function (fields) {
+	// 			$scope.fields.MDR = fields;
+	// 			$scope.bufferTables.MDR = {};
+	// 			fields.forEach(function (field) {
+	// 				$scope.bufferTables.MDR[field.EntityPropertyName] = $scope.tables.MDR[field.EntityPropertyName];
+	// 			});
+	// 			deferred.resolve(null);
+	// 		});
+	// 	});
+	// 	return deferred.promise;
+	// }
 
 
 
-	function _get_upc_table () {
-		var deferred = $q.defer();
-		UPCTableList.find('$filter=Report/Id eq ' + $scope.report.Id).then(function (tables) {
-			if (tables.length > 0) {
-				$scope.tables.UPC = tables[0];
-			}
-			UPCTableList.fields('$filter=(CanBeDeleted eq true) and (TypeDisplayName ne \'Lookup\')').then(function (fields) {
-				$scope.fields.UPC = fields;
-				$scope.bufferTables.UPC = {};
-				fields.forEach(function (field) {
-					$scope.bufferTables.UPC[field.EntityPropertyName] = $scope.tables.UPC[field.EntityPropertyName];
-				});
-				deferred.resolve(null);
-			});
-		});
-		return deferred.promise;
-	}
+	// function _get_upc_table () {
+	// 	var deferred = $q.defer();
+	// 	UPCTableList.find('$filter=Report/Id eq ' + $scope.report.Id).then(function (tables) {
+	// 		if (tables.length > 0) {
+	// 			$scope.tables.UPC = tables[0];
+	// 		}
+	// 		UPCTableList.fields('$filter=(CanBeDeleted eq true) and (TypeDisplayName ne \'Lookup\')').then(function (fields) {
+	// 			$scope.fields.UPC = fields;
+	// 			$scope.bufferTables.UPC = {};
+	// 			fields.forEach(function (field) {
+	// 				$scope.bufferTables.UPC[field.EntityPropertyName] = $scope.tables.UPC[field.EntityPropertyName];
+	// 			});
+	// 			deferred.resolve(null);
+	// 		});
+	// 	});
+	// 	return deferred.promise;
+	// }
 
 
 
@@ -262,61 +259,59 @@ angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportLi
 
 
 
+	// function load_previous_tables () {
+	// 	var deferred = $q.defer();
+	// 	UPCTableList.find('$filter=Report/Id eq ' + $scope.lastReport.Id).then(function (tables) {
+	// 		deferred.resolve(tables);
+	// 	});
+	// 	return deferred.promise;
+	// }
+
+
 	function init_report_manager () {
 		var deferred = $q.defer();
-		// Get the current report
-		get_current_report().then(function (report) {
-			// Check if the current report Author Id matches the current User Id
+
+		get_current_report()
+		.then(function (report) {
 			if (report.Author.Id !== $rootScope.me.get_id()) {
-				// If not, go to close last report page
 				deferred.resolve('close');
 			}
-			// Bind report and initialize comments array
 			$scope.report = report;
 			$scope.comments = [];
-			// Get the last report
-			get_last_report().then(function (lastReport) {
-				// Bind the last report to scope
-				$scope.lastReport = lastReport;
-				// Check if report is initialize
-				if ($scope.report.IsInitialize) {
-					console.log('report already initialize');
-					// Load current report comments
-					load_comments().then(function (comments) {
-						// Bind comments to scope
-						$scope.comments = $scope.comments.concat(comments);
-						// Show interface
+			return get_last_report();
+		})
+		.then(function (lastReport) {
+			$scope.lastReport = lastReport;
+			if ($scope.report.IsInitialize) {
+				console.log('report already initialize');
+				return load_comments();
+			} else if ($scope.lastReport === null || !$scope.report.useLastReport) {
+				console.log('first report ever or not using last report comments');
+				set_report_initialize().then(function () {
+					deferred.resolve(true);					
+				});
+			} else if ($scope.report.useLastReport) {
+				console.log('report using last report comments');
+				load_previous_comments().then(function (comments) {
+					console.log('Previous comments', comments);
+					$scope.comments = $scope.comments.concat(comments);
+					set_report_initialize().then(function () {
 						deferred.resolve(true);
 					});
-				// Last report is null because first report ever or doesnt want to use last report comments
-				} else if ($scope.lastReport === null || !$scope.report.useLastReport) {
-					console.log('first report ever or not using last report comments');
-					// Set report to initialize
-					set_report_initialize().then(function () {
-						// Show interface
-						deferred.resolve(true);					
-					});
-				// Report is not initialize but wants to use last report comments
-				} else if ($scope.report.useLastReport) {
-					console.log('report using last report comments');
-					// Load the comments from the last report
-					load_previous_comments().then(function (comments) {
-						console.log('Previous comments', comments);
-						// Bound the new comments
-						$scope.comments = $scope.comments.concat(comments);
-						// Set report to initialize
-						set_report_initialize().then(function () {
-							// Show interface
-							deferred.resolve(true);
-						});
-					});
-				} else {
-					deferred.reject(false);
-				}
-			});
-		});	
+				});
+			} else {
+				deferred.reject(false);
+			}	
+		})
+		.then(function (comments) {
+			$scope.comments = $scope.comments.concat(comments);
+			deferred.resolve(true);
+		})
+		.catch(deferred.reject);
+
 		return deferred.promise;	
 	}
+
 
 
 }]);

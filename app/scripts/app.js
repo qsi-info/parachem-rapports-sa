@@ -28,6 +28,7 @@ angular
     'ngRoute',
     'sticky',
     'cfp.loadingBar',
+    'ui.bootstrap.datetimepicker',
   ])
 
   .config(['$routeProvider', function ($routeProvider) {
@@ -68,12 +69,22 @@ angular
         templateUrl: 'views/reload.html',
       })
 
+      .when('/rapportlignes/:id', {
+        templateUrl: 'views/report/rapportlignes.html',
+        controller: 'RapportLignesCtrl',
+      })
+
       // Default
       .otherwise({
         redirectTo: '/gateway'
       });
 
 
+  }])
+
+
+  .config(['dateTimePickerConfig', function (dateTimePickerConfig) {
+    dateTimePickerConfig.minView = 'day';
   }])
 
 
@@ -113,17 +124,33 @@ angular
     return new SharePoint.API.List('Rapports de quart');
   }])
 
-  .factory('UPCTableList', ['SharePoint', function (SharePoint) {
-    return new SharePoint.API.List('Tableau Unite Production Charge');
-  }])
+  // .factory('UPCTableList', ['SharePoint', function (SharePoint) {
+  //   return new SharePoint.API.List('Tableau Unite Production Charge');
+  // }])
 
-  .factory('MDRTableList', ['SharePoint', function (SharePoint) {
-    return new SharePoint.API.List('Tableau Mouvements de Reservoirs');
+  // .factory('MDRTableList', ['SharePoint', function (SharePoint) {
+  //   return new SharePoint.API.List('Tableau Mouvements de Reservoirs');
+  // }])
+
+
+  .factory('RapportLignes', ['SharePoint', function (SharePoint) {
+    return new SharePoint.API.List('Rapport de lignes');
   }])
 
   .factory('SectionList', ['SharePoint', function (SharePoint) {
     return new SharePoint.API.List('Sections Rapports Parachem');
-  }]);
+  }])
+
+
+
+
+
+  .filter('customDate', function () {
+    return function (input) {
+      console.log(input);
+      return input;
+    };
+  });
 
 
 

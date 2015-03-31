@@ -226,6 +226,17 @@ angular.module('AngularSharePointApp').factory('SharePoint', ['$q', function ($q
       .catch(deferred.reject);
       return deferred.promise;       
     };
+
+    this.createField = function (payload) {
+      var deferred = $q.defer();
+      payload.__metadata = { 'type': 'SP.Field'};
+      _sharepoint_post_request('/web/lists/getByTitle(\'' + listTitle + '\')/fields', payload)
+      .then(function (response) {
+        deferred.resolve(JSON.parse(response.body).d);
+      })
+      .catch(deferred.reject);
+      return deferred.promise;      
+    };
     
   }
 

@@ -88,9 +88,9 @@
 		<hr/>
 		<ul class="nav">
 			<li>
-				<a href="javascript:;" data-toggle="modal" data-target="#uniteProductionChargeTable">Unité - Production / Charge</a>
+				<a href="#/rapportlignes/{{report.Id}}">Rapport des lignes</a>
 			</li>
-			<li>
+<!-- 			<li>
 				<a href="javascript:;" data-toggle="modal" data-target="#mouvementsReservoirsTable">Mouvements de réservoirs</a>
 			</li>
 			<li>
@@ -98,7 +98,7 @@
 			</li>
 			<li>
 				<a href="javascript:;" data-toggle="modal" data-target="#quaisTable">Quais 105 et 109</a>
-			</li>	
+			</li>	 -->
 		</ul>
 
 	</div>
@@ -185,13 +185,13 @@
 
 
 <!-- TABLEAU -->
-<div class="modal fade modal-fullscreen report-table" id="uniteProductionChargeTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<!-- <div class="modal fade modal-fullscreen report-table" id="uniteProductionChargeTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 	<form ng-submit="saveUPCTable()">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-body">
 	      	<div class="row">
-		      	<div class="col-md-12">
+		      	<div class="col-md-4">
 
 			      	<table class="table table-condensed table-bordered">
 			      		<caption>Unité - Production / Charge</caption>
@@ -226,7 +226,7 @@
 	  </div>
 	</form>
 </div>
-
+ -->
 
 
 
@@ -241,7 +241,7 @@
 
 
 <!-- TABLEAU -->
-<div class="modal fade modal-fullscreen" id="mouvementsReservoirsTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<!-- <div class="modal fade modal-fullscreen" id="mouvementsReservoirsTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 	<form ng-submit="saveMDRTable()">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
@@ -261,90 +261,11 @@
 			      			</tr>
 			      		</thead>
 			      		<tbody>
-		<!-- 	      			<tr ng-repeat="field in fields.MDR">
+			      			<tr ng-repeat="field in fields.MDR">
 			      				<td>
-			      					<input type="text" ng-model="bufferTables.MDR[]"
+			      					<input type="text" ng-model="bufferTables.MDR[field.EntityPropertyName]"/>
 			      				</td>
-			      			</tr> -->
-
-<!-- 			      			<tr>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
 			      			</tr>
-			      			<tr>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      			</tr>
-			      			<tr>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      				<td><input type="text"/></td>
-			      			</tr> -->
 
 			      		</tbody>
 			      	</table>
@@ -380,13 +301,13 @@
 	    </div>
 	  </div>
 	</form>
-</div>
+</div> -->
 
 
 
 
 <!-- TABLEAU -->
-<div class="modal fade modal-fullscreen" id="transfertsTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<!-- <div class="modal fade modal-fullscreen" id="transfertsTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 	<form ng-submit="saveReport()">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
@@ -454,7 +375,7 @@
 	</form>
 </div>
 
-
+ -->
 
 
 
@@ -468,7 +389,7 @@
 
 
 <!-- TABLEAU -->
-<div class="modal fade modal-fullscreen" id="quaisTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<!-- <div class="modal fade modal-fullscreen" id="quaisTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 	<form ng-submit="saveReport()">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
@@ -506,5 +427,5 @@
 	  </div>
 	</form>
 </div>
-
+ -->
 

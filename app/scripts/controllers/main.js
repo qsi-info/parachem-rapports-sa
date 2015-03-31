@@ -8,7 +8,11 @@
  * Controller of the AngularSharePointApp
  */
 
-angular.module('AngularSharePointApp').controller('MainCtrl', ['ReportList', '$location', '$rootScope', function (ReportList, $location, $rootScope) {
+  /*jshint loopfunc: true */
+
+angular.module('AngularSharePointApp').controller('MainCtrl', 
+	['ReportList', '$location', '$rootScope',
+	function (ReportList, $location, $rootScope) {
 
 	if (typeof $rootScope.me === 'undefined') {
 		return $location.path('/gateway');
