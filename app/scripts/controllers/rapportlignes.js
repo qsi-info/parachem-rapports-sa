@@ -20,6 +20,7 @@ angular.module('AngularSharePointApp').controller('RapportLignesCtrl',
 
 	var reportId = $routeParams.id;
 	$scope.reportId = reportId;
+	cfpLoadingBar.start();
 	RapportLignes.find('$filter=(Report eq \'' + reportId + '\')').then(function (rapportsLignes) {
 
 		// If there is rapport lignes is not created
@@ -30,6 +31,7 @@ angular.module('AngularSharePointApp').controller('RapportLignesCtrl',
 				if (lastRapportsLignes.length < 1) {
 					RapportLignes.add({ ReportId: reportId }).then(function (rapportLignes) {
 						$scope.rapportLignes = rapportLignes;
+						cfpLoadingBar.complete();
 					});
 				} else {
 					var last = lastRapportsLignes[0];
@@ -42,18 +44,22 @@ angular.module('AngularSharePointApp').controller('RapportLignesCtrl',
 					payload.ReportId = reportId;
 					RapportLignes.add(payload).then(function (createdRapport) {
 						$scope.rapportLignes = createdRapport;
+						cfpLoadingBar.complete();
 					});				
 				}
 			});
 		} else {
 			$scope.rapportLignes = rapportsLignes[0];
+			cfpLoadingBar.complete();
 		}
 	});
 
 	$scope.dates = [];
 
+	cfpLoadingBar.start();
 	RapportLignes.fields('$filter=(CanBeDeleted eq true) and (FieldTypeKind eq 2)&$select=Description,EntityPropertyName,Title').then(function (fields) {
 		$scope.fields = fields;
+		cfpLoadingBar.complete();
 	});
 
 	$scope.update = function () {

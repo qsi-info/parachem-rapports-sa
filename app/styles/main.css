@@ -1,3 +1,14 @@
+.remove-icon {
+  color: red !important;
+  font-size: 25px;
+}
+
+
+
+
+
+
+
 .report-choice.selected i, .report-choice.selected .name {
   color: black !important;
 }
@@ -83,7 +94,6 @@
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffc9c9', endColorstr='#ff0000',GradientType=0 ); /* IE6-9 */
 
 }
-
 
 
 

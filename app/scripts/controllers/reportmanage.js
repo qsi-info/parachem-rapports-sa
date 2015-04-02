@@ -14,7 +14,9 @@
 /* jslint browser: true, plusplus: true */
 
 
-angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportList', '$location', '$routeParams', '$scope', '$rootScope', 'CommentList', '$q', 'SectionList', 'cfpLoadingBar', function (ReportList, $location, $routeParams, $scope, $rootScope, CommentList, $q, SectionList, cfpLoadingBar) {
+angular.module('AngularSharePointApp').controller('ReportManageCtrl', 
+	['ReportList', '$location', '$routeParams', '$scope', '$rootScope', 'CommentList', '$q', 'SectionList', 'cfpLoadingBar', 'RapportLignes', 'UPC',
+	function (ReportList, $location, $routeParams, $scope, $rootScope, CommentList, $q, SectionList, cfpLoadingBar, RapportLignes, UPC) {
 
 	if (typeof $rootScope.me === 'undefined') {
 		return $location.path('/gateway');
@@ -120,82 +122,30 @@ angular.module('AngularSharePointApp').controller('ReportManageCtrl', ['ReportLi
 	$scope.submitReport = function () {
 		if (window.confirm('Etes-vous certain de vouloir soumettre le rapport? Ceci sera la version finale.')) {
 			cfpLoadingBar.start();			
-			ReportList.update($scope.report.Id, { IsActive: false }).then(function () {
-				cfpLoadingBar.complete();				
-				$location.path('/report/end');
+
+			RapportLignes.find('$filter=(Report eq \'' + $scope.report.Id + '\')')
+			.then(function (founds) {
+				if (founds.length < 1) {
+					cfpLoadingBar.complete();				
+					return window.alert('Veuillez visiter votre rapport de lignes au moins une fois');
+				} else {
+					UPC.find('$filter=(Report eq \'' + $scope.report.Id + '\')').then(function (founds) {
+						if (founds.length < 1) {
+							cfpLoadingBar.complete();				
+							return window.alert('Veuillez visiter votre rapport d\'événements au moins une fois');
+						} else {		
+							ReportList.update($scope.report.Id, { IsActive: false }).then(function () {
+								cfpLoadingBar.complete();				
+								$location.path('/report/end');				
+							});
+						}
+					});
+				}
 			});
 		}
 	};
 
 
-
-	// $scope.saveUPCTable= function () {
-	// 	cfpLoadingBar.start();
-	// 	UPCTableList.update($scope.tables.UPC.Id, $scope.bufferTables.UPC).then(function () {
-	// 		cfpLoadingBar.complete();
-	// 		$('.report-table').modal('hide');
-	// 	});
-	// };
-
-
-
-
-
-
-
-	/////////////////////////////////////////////////////////////////
-	// PRIVATE FUNCTIONS 
-	/////////////////////////////////////////////////////////////////	
-
-	// function get_tables () {
-	// 	var deferred = $q.defer();
-	// 	_get_upc_table().then(function () {
-	// 		_get_mdr_table().then(function () {
-	// 			deferred.resolve(null);
-	// 		});
-	// 	});
-	// 	return deferred.promise;
-	// }
-
-
-
-	// function _get_mdr_table () {
-	// 	var deferred = $q.defer();
-	// 	MDRTableList.find('$filter=Report/Id eq ' + $scope.report.Id).then(function (tables) {
-	// 		if (tables.length > 0) {
-	// 			$scope.tables.MDR = tables[0];
-	// 		}
-	// 		MDRTableList.fields('$filter=(CanBeDeleted eq true) and (TypeDisplayName ne \'Lookup\')').then(function (fields) {
-	// 			$scope.fields.MDR = fields;
-	// 			$scope.bufferTables.MDR = {};
-	// 			fields.forEach(function (field) {
-	// 				$scope.bufferTables.MDR[field.EntityPropertyName] = $scope.tables.MDR[field.EntityPropertyName];
-	// 			});
-	// 			deferred.resolve(null);
-	// 		});
-	// 	});
-	// 	return deferred.promise;
-	// }
-
-
-
-	// function _get_upc_table () {
-	// 	var deferred = $q.defer();
-	// 	UPCTableList.find('$filter=Report/Id eq ' + $scope.report.Id).then(function (tables) {
-	// 		if (tables.length > 0) {
-	// 			$scope.tables.UPC = tables[0];
-	// 		}
-	// 		UPCTableList.fields('$filter=(CanBeDeleted eq true) and (TypeDisplayName ne \'Lookup\')').then(function (fields) {
-	// 			$scope.fields.UPC = fields;
-	// 			$scope.bufferTables.UPC = {};
-	// 			fields.forEach(function (field) {
-	// 				$scope.bufferTables.UPC[field.EntityPropertyName] = $scope.tables.UPC[field.EntityPropertyName];
-	// 			});
-	// 			deferred.resolve(null);
-	// 		});
-	// 	});
-	// 	return deferred.promise;
-	// }
 
 
 

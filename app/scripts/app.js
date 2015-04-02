@@ -74,6 +74,11 @@ angular
         controller: 'RapportLignesCtrl',
       })
 
+      .when('/rapportevenements/:id', {
+        templateUrl: 'views/report/rapportevenements.html',
+        controller: 'RapportEvenementsCtrl',
+      })
+
       // Default
       .otherwise({
         redirectTo: '/gateway'
@@ -124,17 +129,24 @@ angular
     return new SharePoint.API.List('Rapports de quart');
   }])
 
-  // .factory('UPCTableList', ['SharePoint', function (SharePoint) {
-  //   return new SharePoint.API.List('Tableau Unite Production Charge');
-  // }])
+  .factory('UPC', ['SharePoint', function (SharePoint) {
+    return new SharePoint.API.List('Unite Production Charge');
+  }])
 
-  // .factory('MDRTableList', ['SharePoint', function (SharePoint) {
-  //   return new SharePoint.API.List('Tableau Mouvements de Reservoirs');
-  // }])
+  .factory('Info', ['SharePoint', function (SharePoint) {
+    return new SharePoint.API.List('Rapport SA Informations');
+  }])
 
+  .factory('Transferts', ['SharePoint', function (SharePoint) {
+    return new SharePoint.API.List('Rapport SA Transferts');
+  }])
 
   .factory('RapportLignes', ['SharePoint', function (SharePoint) {
     return new SharePoint.API.List('Rapport de lignes');
+  }])
+
+  .factory('Mouvements', ['SharePoint', function (SharePoint) {
+    return new SharePoint.API.List('Mouvements de reservoirs');
   }])
 
   .factory('SectionList', ['SharePoint', function (SharePoint) {

@@ -1,0 +1,204 @@
+<div class="row">
+	<a href="#/report/manage/{{reportId}}" class="btn btn-default pull-left">retour au rapport</a>
+	<a href="#/report/manage/{{reportId}}" class="btn btn-default pull-right">retour au rapport</a>
+</div>
+
+<div class="row">
+	<div class="col-md-5">
+
+		<table class="table">
+			<caption>Unité - Production / Charge</caption>
+			<tbody>
+				<tr ng-repeat="item in UPC">
+					<td>
+						<p>{{item.Title}}</p>
+					</td>
+					<td>
+						<select ng-model="item.Reservoir" ng-change="updateUPCReservoir($index)" ng-options="item for item in reservoirs" class="form-control"></select>
+					</td>
+					<td>
+						<a href="javascript:;" ng-click="removeUPC($index)">
+							<i class="fa fa-minus-circle remove-icon"></i>
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" class="form-control" ng-model="newUPC.Title" placeholder="description"/>
+					</td>
+					<td>
+						<select ng-model="newUPC.Reservoir" ng-options="item for item in reservoirs" class="form-control"></select>
+					</td>
+					<td>
+						<button class="btn btn-primary" ng-click="addUPC()">Ajouter</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+	<div class="col-md-7">
+
+
+
+
+
+
+		<table class="table">
+			<caption>Mouvements de réservoirs</caption>
+			<tbody>
+				<tr ng-repeat="item in Mouvements">
+					<td>{{item.Reservoir}}</td>
+					<td>{{item.Mouvement}}</td>
+					<td>{{item.Valeur}}</td>
+					<td>{{item.Heure}}</td>
+					<td>
+						<a href="javascript:;" ng-click="removeMouvement($index)">
+							<i class="fa fa-minus-circle remove-icon"></i>
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<select class="form-control" ng-options="item for item in reservoirs" ng-model="newMouvement.Reservoir"></select>
+					</td>
+					<td>
+						<select class="form-control" ng-model="newMouvement.Mouvement">
+							<option>HAUSSE</option>
+							<option>BAISSE</option>
+						</select>
+					</td>
+					<td>
+						<input type="text" class="form-control" ng-model="newMouvement.Valeur"/>
+					</td>	
+					<td>
+						<input type="text" class="form-control" ng-model="newMouvement.Heure"/>
+					</td>	
+					<td>
+						<button class="btn btn-primary" ng-click="addMouvement()">Ajouter</button>
+					</td>				
+				</tr>
+			</tbody>
+		</table>
+
+
+
+
+		<table class="table">
+			<caption>Transferts</caption>
+			<tbody>
+				<tr ng-repeat="item in Transferts">
+					<td>{{item.From}}</td>
+					<td><b>Vers</b></td>
+					<td>{{item.To}}</td>
+					<td>
+						<a href="javascript:;" ng-click="removeTransfert($index)">
+							<i class="fa fa-minus-circle remove-icon"></i>
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" class="form-control" ng-model="newTransfert.From"/>
+					</td>
+					<td><b>Vers</b></td>
+					<td>
+						<input type="text" class="form-control" ng-model="newTransfert.To"/>
+					</td>	
+					<td>
+						<button class="btn btn-primary" ng-click="addTransfert()">Ajouter</button>
+					</td>				
+				</tr>
+			</tbody>
+		</table>
+
+
+
+
+
+		<table class="table">
+			<caption>Informations</caption>
+			<tbody>
+				<tr>
+					<td>Quai section 105</td>
+					<td>
+						<input type="text" ng-model="Info.Quai105" class="form-control"/>
+					</td>
+				</tr>
+				<tr>
+					<td>Quai section 109</td>
+					<td>
+						<input type="text" ng-model="Info.Quai109" class="form-control"/>
+					</td>
+				</tr>
+				<tr>
+					<td>Iso Conteneur PSI</td>
+					<td>
+						<input type="text" ng-model="Info.IsoPSI" class="form-control"/>
+					</td>
+				</tr>
+				<tr>
+					<td>Iso Conteneur Niveau</td>
+					<td>
+						<input type="text" ng-model="Info.IsoNiveau" class="form-control"/>
+					</td>
+				</tr>
+				<tr>
+					<td>Iso Conteneur Heure</td>
+					<td>
+						<input type="text" ng-model="Info.IsoHeure" class="form-control"/>
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>
+						<button class="btn btn-success" ng-click="saveInfo()">Sauvegarder</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+
+		<!--
+		<form class="form" ng-submit="saveInfo()">
+			<fieldset>
+				<legend>Informations</legend>
+				<div class="form-group">
+					<label>Quai section 105</label>
+					<input type="text" ng-model="Info.Quai105" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label>Quai section 109</label>
+					<input type="text" ng-model="Info.Quai109" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label>Iso Conteneur PSI</label>
+					<input type="text" ng-model="Info.IsoPSI" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label>Iso Conteneur Niveau</label>
+					<input type="text" ng-model="Info.IsoNiveau" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label>Iso Conteneur Heure</label>
+					<input type="text" ng-model="Info.IsoHeure" class="form-control"/>
+				</div>
+				<button type="submit" class="btn btn-success">Sauvegarder</button>
+			</fieldset>
+		</form>
+	-->
+
+
+	</div>
+
+
+</div>
+
+
+
+<div class="row">
+	<a href="#/report/manage/{{reportId}}" class="btn btn-default pull-left">retour au rapport</a>
+	<a href="#/report/manage/{{reportId}}" class="btn btn-default pull-right">retour au rapport</a>
+</div>
+
+
