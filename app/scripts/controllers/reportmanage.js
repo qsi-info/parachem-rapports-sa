@@ -243,7 +243,6 @@ angular.module('AngularSharePointApp').controller('ReportManageCtrl',
 			} else if ($scope.report.useLastReport) {
 				console.log('report using last report comments');
 				load_previous_comments().then(function (comments) {
-					console.log('Previous comments', comments);
 					$scope.comments = $scope.comments.concat(comments);
 					set_report_initialize().then(function () {
 						deferred.resolve(true);

@@ -46,6 +46,14 @@
 
 		<table class="table">
 			<caption>Mouvements de réservoirs</caption>
+			<thead>
+				<tr>
+					<th>Réservoir</th>
+					<th>Mouvement</th>
+					<th>Niveau</th>
+					<th>Heure</th>
+				</tr>
+			</thead>
 			<tbody>
 				<tr ng-repeat="item in Mouvements">
 					<td>{{item.Reservoir}}</td>
@@ -69,10 +77,10 @@
 						</select>
 					</td>
 					<td>
-						<input type="text" class="form-control" ng-model="newMouvement.Valeur"/>
+						<input type="text" class="form-control" placeholder="Niveau" ng-model="newMouvement.Valeur"/>
 					</td>	
 					<td>
-						<input type="text" class="form-control" ng-model="newMouvement.Heure"/>
+						<input type="text" class="form-control" placeholder="Heure" ng-model="newMouvement.Heure"/>
 					</td>	
 					<td>
 						<button class="btn btn-primary" ng-click="addMouvement()">Ajouter</button>
@@ -99,11 +107,11 @@
 				</tr>
 				<tr>
 					<td>
-						<input type="text" class="form-control" ng-model="newTransfert.From"/>
+						<input type="text" class="form-control" placeholder="De" ng-model="newTransfert.From"/>
 					</td>
 					<td><b>Vers</b></td>
 					<td>
-						<input type="text" class="form-control" ng-model="newTransfert.To"/>
+						<input type="text" class="form-control" placeholder="À" ng-model="newTransfert.To"/>
 					</td>	
 					<td>
 						<button class="btn btn-primary" ng-click="addTransfert()">Ajouter</button>

@@ -33,6 +33,7 @@ angular.module('AngularSharePointApp').controller('RapportEvenementsCtrl',
 
 
 
+
 	///////////////////////////////////////////////////
 	// Unite Production / Charge
 	///////////////////////////////////////////////////
@@ -70,25 +71,6 @@ angular.module('AngularSharePointApp').controller('RapportEvenementsCtrl',
 	};
 
 
-	cfpLoadingBar.start();
-	UPC.find('$filter=(Report eq \'' + reportId + '\')').then(function (items) {
-		// There is no items for that report
-		if (items.length < 1) {
-			get_last_report().then(function (lastReport) {
-				if (lastReport) {
-					load_previous_upc(lastReport.Id).then(function (items) {
-						$scope.UPC = items;
-						cfpLoadingBar.complete();
-					});					
-				} else {
-					cfpLoadingBar.complete();
-				}
-			});
-		} else {
-			$scope.UPC = items;
-			cfpLoadingBar.complete();
-		}
-	});
 
 
 
@@ -122,24 +104,7 @@ angular.module('AngularSharePointApp').controller('RapportEvenementsCtrl',
 		}
 	};
 
-	cfpLoadingBar.start();
-	Transferts.find('$filter=(Report eq \'' + reportId + '\')')
-	.then(function (items) {
-		if (items.length < 1) {
-			get_last_report().then(function (lastReport) {
-				if (lastReport) {
-					load_previous_transferts(lastReport.Id).then(function (items) {
-						$scope.Transferts = items;
-					})
-				} else {
-					cfpLoadingBar.complete();								
-				}
-			})
-		} else {
-			$scope.Transferts = items;
-			cfpLoadingBar.complete();			
-		}
-	});
+
 
 
 
@@ -176,24 +141,7 @@ angular.module('AngularSharePointApp').controller('RapportEvenementsCtrl',
 		}
 	};
 
-	cfpLoadingBar.start();
-	Mouvements.find('$filter=(Report eq \'' + reportId + '\')')
-	.then(function (items) {
-		if (items.length < 1) {
-			get_last_report().then(function (lastReport) {
-				if (lastReport) {
-					load_previous_mouvements(lastReport.Id).then(function (items) {
-						$scope.Mouvements = items;
-					})
-				} else {
-					cfpLoadingBar.complete();								
-				}
-			})
-		} else {
-			$scope.Mouvements = items;
-			cfpLoadingBar.complete();			
-		}
-	});
+
 
 
 	// cfpLoadingBar.start();
@@ -242,24 +190,6 @@ angular.module('AngularSharePointApp').controller('RapportEvenementsCtrl',
 		});
 	};
 
-	cfpLoadingBar.start();
-	Info.find('$filter=(Report eq \'' + reportId + '\')').then(function (items) {
-		if (items.length < 1) {
-			get_last_report().then(function (lastReport) {
-				if (lastReport) {
-					load_previous_info(lastReport.Id).then(function (info) {
-						$scope.Info = info;
-						cfpLoadingBar.complete();
-					});					
-				} else {
-					cfpLoadingBar.complete();
-				}
-			});
-		} else {
-			$scope.Info = items[0];
-			cfpLoadingBar.complete();
-		}
-	});
 
 
 
@@ -271,6 +201,111 @@ angular.module('AngularSharePointApp').controller('RapportEvenementsCtrl',
 	///////////////////////////////////////////////////
 	// PRIVATE FUNCTIONS
 	///////////////////////////////////////////////////
+
+
+	function __init () {
+
+		var promises = [];
+
+		var upcDeferred = $q.defer();
+		UPC.find('$filter=(Report eq \'' + reportId + '\')').then(function (items) {
+			// There is no items for that report
+			if (items.length < 1) {
+				get_last_report().then(function (lastReport) {
+					if (lastReport) {
+						load_previous_upc(lastReport.Id).then(function (items) {
+							$scope.UPC = items;
+							upcDeferred.resolve();
+						});					
+					} else {
+						upcDeferred.resolve();
+					}
+				});
+			} else {
+				$scope.UPC = items;
+				upcDeferred.resolve();
+			}
+		});
+		promises.push(upcDeferred.promise);
+
+
+
+		var infoDeferred = $q.defer();
+		Info.find('$filter=(Report eq \'' + reportId + '\')').then(function (items) {
+			if (items.length < 1) {
+				get_last_report().then(function (lastReport) {
+					if (lastReport) {
+						load_previous_info(lastReport.Id).then(function (info) {
+							$scope.Info = info;
+							infoDeferred.resolve();
+						});					
+					} else {
+						infoDeferred.resolve();
+					}
+				});
+			} else {
+				$scope.Info = items[0];
+				infoDeferred.resolve();
+			}
+		});
+		promises.push(infoDeferred.promise);
+
+
+		var mouvementDeferred = $q.defer();
+		Mouvements.find('$filter=(Report eq \'' + reportId + '\')')
+		.then(function (items) {
+			if (items.length < 1) {
+				get_last_report().then(function (lastReport) {
+					if (lastReport) {
+						load_previous_mouvements(lastReport.Id).then(function (items) {
+							$scope.Mouvements = items;
+							mouvementDeferred.resolve();
+						})
+					} else {
+						mouvementDeferred.resolve();
+					}
+				})
+			} else {
+				$scope.Mouvements = items;
+				mouvementDeferred.resolve();
+			}
+		});
+		promises.push(mouvementDeferred.promise);
+
+
+		var transfertsDeferred = $q.defer();
+		Transferts.find('$filter=(Report eq \'' + reportId + '\')')
+		.then(function (items) {
+			if (items.length < 1) {
+				get_last_report().then(function (lastReport) {
+					if (lastReport) {
+						load_previous_transferts(lastReport.Id).then(function (items) {
+							$scope.Transferts = items;
+							transfertsDeferred.resolve();
+						})
+					} else {
+						transfertsDeferred.resolve();
+					}
+				})
+			} else {
+				$scope.Transferts = items;
+				transfertsDeferred.resolve();
+			}
+		});
+		promises.push(transfertsDeferred.promise);
+
+
+		cfpLoadingBar.start();
+		$q.all(promises).then(function () {
+			cfpLoadingBar.complete();
+		});
+	}
+
+
+	__init();
+
+
+
 
 	function get_last_report () {
 		var deferred = $q.defer();
