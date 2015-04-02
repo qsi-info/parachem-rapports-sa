@@ -18,6 +18,8 @@ angular.module('AngularSharePointApp').controller('RapportLignesCtrl',
 		return $location.path('/gateway');
 	}
 
+	$scope.review = $routeParams.review;
+
 	var reportId = $routeParams.id;
 	$scope.reportId = reportId;
 	cfpLoadingBar.start();

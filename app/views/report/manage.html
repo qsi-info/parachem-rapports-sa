@@ -88,10 +88,10 @@
 		<hr/>
 		<ul class="nav">
 			<li>
-				<a href="#/rapportevenements/{{report.Id}}">Rapport d'événements</a>
+				<a href="#/rapportevenements/{{report.Id}}?review={{inReview ? 'yes' : 'no'}}">Rapport d'événements</a>
 			</li>
 			<li>
-				<a href="#/rapportlignes/{{report.Id}}">Rapport des lignes</a>
+				<a href="#/rapportlignes/{{report.Id}}?review={{inReview ? 'yes' : 'no'}}">Rapport des lignes</a>
 			</li>
 <!-- 			<li>
 				<a href="javascript:;" data-toggle="modal" data-target="#mouvementsReservoirsTable">Mouvements de réservoirs</a>

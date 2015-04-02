@@ -20,6 +20,8 @@ angular.module('AngularSharePointApp').controller('RapportEvenementsCtrl',
 		return $location.path('/gateway');
 	}
 
+	$scope.review = $routeParams.review;
+
 	var reportId = $routeParams.id;
 	$scope.reportId = reportId;
 
@@ -120,9 +122,23 @@ angular.module('AngularSharePointApp').controller('RapportEvenementsCtrl',
 		}
 	};
 
+	cfpLoadingBar.start();
 	Transferts.find('$filter=(Report eq \'' + reportId + '\')')
 	.then(function (items) {
-		$scope.Transferts = items;
+		if (items.length < 1) {
+			get_last_report().then(function (lastReport) {
+				if (lastReport) {
+					load_previous_transferts(lastReport.Id).then(function (items) {
+						$scope.Transferts = items;
+					})
+				} else {
+					cfpLoadingBar.complete();								
+				}
+			})
+		} else {
+			$scope.Transferts = items;
+			cfpLoadingBar.complete();			
+		}
 	});
 
 
@@ -160,10 +176,45 @@ angular.module('AngularSharePointApp').controller('RapportEvenementsCtrl',
 		}
 	};
 
+	cfpLoadingBar.start();
 	Mouvements.find('$filter=(Report eq \'' + reportId + '\')')
 	.then(function (items) {
-		$scope.Mouvements = items;
+		if (items.length < 1) {
+			get_last_report().then(function (lastReport) {
+				if (lastReport) {
+					load_previous_mouvements(lastReport.Id).then(function (items) {
+						$scope.Mouvements = items;
+					})
+				} else {
+					cfpLoadingBar.complete();								
+				}
+			})
+		} else {
+			$scope.Mouvements = items;
+			cfpLoadingBar.complete();			
+		}
 	});
+
+
+	// cfpLoadingBar.start();
+	// UPC.find('$filter=(Report eq \'' + reportId + '\')').then(function (items) {
+	// 	// There is no items for that report
+	// 	if (items.length < 1) {
+	// 		get_last_report().then(function (lastReport) {
+	// 			if (lastReport) {
+	// 				load_previous_upc(lastReport.Id).then(function (items) {
+	// 					$scope.UPC = items;
+	// 					cfpLoadingBar.complete();
+	// 				});					
+	// 			} else {
+	// 				cfpLoadingBar.complete();
+	// 			}
+	// 		});
+	// 	} else {
+	// 		$scope.UPC = items;
+	// 		cfpLoadingBar.complete();
+	// 	}
+	// });
 
 
 
@@ -186,7 +237,8 @@ angular.module('AngularSharePointApp').controller('RapportEvenementsCtrl',
 			Quai109: $scope.Info.Quai109,
 		}).then(function () {
 			cfpLoadingBar.complete();
-			$location.path('/report/manage/'.concat($scope.reportId));
+			// $location.path('/report/manage/'+ $scope.reportId + '?review=' + $scope.review);
+			$location.path('/report/manage/'+ $scope.reportId);
 		});
 	};
 
@@ -251,11 +303,36 @@ angular.module('AngularSharePointApp').controller('RapportEvenementsCtrl',
 		var deferred = $q.defer();
 		Info.find('$filter=(Report eq \'' + lastReportId + '\')').then(function (items) {
 			var info = items[0] || {};
-			Info.add({ IsoPSI: info.IsoPSI, IsoNiveau: info.IsoNiveau, IsoHeure: info.IsoHeure, ReportId: $scope.reportId}).then(deferred.resolve);
+			Info.add({ Quai109: info.Quai109, Quai105: info.Quai105, IsoPSI: info.IsoPSI, IsoNiveau: info.IsoNiveau, IsoHeure: info.IsoHeure, ReportId: $scope.reportId}).then(deferred.resolve);
 		});
 		return deferred.promise;
 	}
 
+
+	function load_previous_mouvements (lastReportId) {
+		var deferred = $q.defer();
+		Mouvements.find('$filter=(Report eq \'' + lastReportId + '\')').then(function (items) {
+			var promises = [];
+			items.forEach(function (item) {
+				promises.push(Mouvements.add({ Valeur: item.Valeur, Heure: item.Heure, Mouvement: item.Mouvement, Reservoir: item.Reservoir, ReportId: $scope.reportId }));
+			});
+			$q.all(promises).then(deferred.resolve);
+		});
+		return deferred.promise;
+	}
+
+
+	function load_previous_transferts (lastReportId) {
+		var deferred = $q.defer();
+		Transferts.find('$filter=(Report eq \'' + lastReportId + '\')').then(function (items) {
+			var promises = [];
+			items.forEach(function (item) {
+				promises.push(Transferts.add({ From: item.From, To: item.To, ReportId: $scope.reportId }));
+			});
+			$q.all(promises).then(deferred.resolve);
+		});
+		return deferred.promise;
+	}
 
 
 }]);
