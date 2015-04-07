@@ -155,11 +155,17 @@ angular
 
 
 
+  // .filter('productFilter', function () {
+  //   return function (input) {
+  //     console.log(input);
+  //     return input.Title.indexOf('Product') !== -1;
+  //   };
+  // })
+
 
 
   .filter('customDate', function () {
     return function (input) {
-      console.log(input);
       return input;
     };
   });

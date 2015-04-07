@@ -295,8 +295,10 @@ angular.module('AngularSharePointApp').controller('RapportEvenementsCtrl',
 		promises.push(transfertsDeferred.promise);
 
 
+		$scope.hasLoad = false;
 		cfpLoadingBar.start();
 		$q.all(promises).then(function () {
+			$scope.hasLoad = true;
 			cfpLoadingBar.complete();
 		});
 	}
