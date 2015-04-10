@@ -136,33 +136,33 @@
 				<tr>
 					<td>Quai section 109</td>
 					<td>
-						<input type="text" ng-model="Info.Quai109" class="form-control"/>
+						<input type="text" ng-blur="saveInfo()" ng-model="Info.Quai109" class="form-control"/>
 					</td>
 				</tr>
 				<tr>
 					<td>Iso Conteneur PSI</td>
 					<td>
-						<input type="text" ng-model="Info.IsoPSI" class="form-control"/>
+						<input type="text" ng-blur="saveInfo()" ng-model="Info.IsoPSI" class="form-control"/>
 					</td>
 				</tr>
 				<tr>
 					<td>Iso Conteneur Niveau</td>
 					<td>
-						<input type="text" ng-model="Info.IsoNiveau" class="form-control"/>
+						<input type="text" ng-blur="saveInfo()" ng-model="Info.IsoNiveau" class="form-control"/>
 					</td>
 				</tr>
 				<tr>
 					<td>Iso Conteneur Heure</td>
 					<td>
-						<input type="text" ng-model="Info.IsoHeure" class="form-control"/>
+						<input type="text" ng-blur="saveInfo()" ng-model="Info.IsoHeure" class="form-control"/>
 					</td>
 				</tr>
-				<tr>
+<!-- 				<tr>
 					<td>&nbsp;</td>
 					<td>
 						<button class="btn btn-success" ng-click="saveInfo()">Sauvegarder</button>
 					</td>
-				</tr>
+				</tr> -->
 			</tbody>
 		</table>
 

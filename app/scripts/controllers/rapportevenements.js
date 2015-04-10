@@ -186,7 +186,7 @@ angular.module('AngularSharePointApp').controller('RapportEvenementsCtrl',
 		}).then(function () {
 			cfpLoadingBar.complete();
 			// $location.path('/report/manage/'+ $scope.reportId + '?review=' + $scope.review);
-			$location.path('/report/manage/'+ $scope.reportId);
+			// $location.path('/report/manage/'+ $scope.reportId);
 		});
 	};
 
