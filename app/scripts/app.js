@@ -29,6 +29,7 @@ angular
     'sticky',
     'cfp.loadingBar',
     'ui.bootstrap.datetimepicker',
+    'uiSwitch',
   ])
 
   .config(['$routeProvider', function ($routeProvider) {

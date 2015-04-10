@@ -1,13 +1,24 @@
 <a href="#/report/manage/{{reportId}}?review={{review}}" class="btn btn-default pull-left">retour au rapport</a>
 <a href="#/report/manage/{{reportId}}?review={{review}}" class="btn btn-default pull-right">retour au rapport</a>
 
-<table class="table table-striped table-bordered table-hover">
+<table class="table table-striped table-bordered ">
 	<caption>Rapport de lignes</caption>
+	<thead>
+		<tr>
+			<th>Ligne</th>
+			<th>Activation</th>
+			<th>Produit</th>
+			<th>Date</th>
+		</tr>
+	</thead>
 	<tbody>
-		<tr ng-repeat="field in fields" ng-show="field.Title.indexOf('Date') === -1">
+		<tr ng-repeat="field in fields" ng-show="field.Title.indexOf('Date') === -1 && field.Title.indexOf('Activation') === -1">
 			<td>{{field.Description}}</td>
+			<td>
+				<switch ng-change="update()" ng-model="rapportLignes[field.Title + '_Activation']" class="green"></switch>
+			</td>
 			<td ng-show="field.Title != 'Product_60'">
-				<select ng-change="update()" ng-model="rapportLignes[field.Title]" class="form-control">
+				<select ng-change="update()" ng-model="rapportLignes[field.Title]" class="form-control" ng-disabled="!rapportLignes[field.Title + '_Activation']">
 					<option>Vide</option>
 					<option>Xylene</option>
 					<option>Toluene</option>
@@ -21,13 +32,13 @@
 				</select>
 			</td>
 			<td ng-show="field.Title == 'Product_60'">
-				<select ng-change="update()" ng-model="rapportLignes[field.Title]" class="form-control">
+				<select ng-change="update()" ng-model="rapportLignes[field.Title]" class="form-control" ng-disabled="!rapportLignes[field.Title + '_Activation']">
 					<option>Oui</option>
 					<option>Non</option>
 				</select>			
 			</td>
 			<td>
-				<input type="text" class="form-control" ng-blur="update()" ng-model="rapportLignes[field.Title + '_Date']"/>
+				<input type="text" class="form-control" ng-disabled="!rapportLignes[field.Title + '_Activation']" ng-blur="update()" ng-model="rapportLignes[field.Title + '_Date']"/>
 			</td>
 		</tr>
 	</tbody>
